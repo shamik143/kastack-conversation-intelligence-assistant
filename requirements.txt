@@ -8,5 +8,3 @@ scikit-learn
 nltk
 plotly
 tqdm
-chromadb==0.5.5
-protobuf==3.20.3
