@@ -1,0 +1,21 @@
+{
+  "habits": [
+    "sleep",
+    "fitness",
+    "study",
+    "music",
+    "smoking"
+  ],
+  "personal_facts": [
+    "relationship",
+    "student",
+    "job"
+  ],
+  "traits": [
+    "curious"
+  ],
+  "communication_style": {
+    "avg_words_per_message": 11.33,
+    "question_count": 44391
+  }
+}
