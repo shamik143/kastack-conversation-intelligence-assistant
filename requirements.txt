@@ -1,11 +1,12 @@
 streamlit
 pandas
 numpy
-chromadb
-sentence-transformers
-transformers
+sentence-transformers==3.0.1
+transformers==4.44.2
 torch
 scikit-learn
 nltk
 plotly
 tqdm
+chromadb==0.5.5
+protobuf==3.20.3
