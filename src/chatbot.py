@@ -71,11 +71,17 @@ Examples:
 
             return self.describe_habits()
 
-        elif (
-            "talk" in query_lower
-            or "communication" in query_lower
-            or "speaking style" in query_lower
-        ):
+       elif any(
+             phrase in query_lower
+              for phrase in [
+                "talk",
+                "communication",
+                "communicate",
+             "speaking style",
+            "how do they talk",
+            "how do they communicate"
+        ]
+     ):
 
             return self.describe_style()
 
