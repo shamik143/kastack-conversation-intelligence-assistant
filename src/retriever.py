@@ -1,5 +1,9 @@
 import json
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
+
+print("Loading topic summaries...")
 
 with open(
     "outputs/topic_summaries.json",
@@ -9,47 +13,50 @@ with open(
 
     TOPICS = json.load(f)
 
+print("Loading embedding model...")
 
-def retrieve(query):
+model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
 
-    query = query.lower()
+documents = [
+    t["summary"]
+    for t in TOPICS
+]
 
-    matches = []
+embeddings = model.encode(
+    documents,
+    show_progress_bar=False
+)
 
-    for topic in TOPICS:
 
-        summary = topic.get(
-            "summary",
-            ""
-        )
+def retrieve(
+    query,
+    top_k=5
+):
 
-        if query in summary.lower():
+    query_embedding = model.encode(
+        [query]
+    )
 
-            matches.append(
-                summary
-            )
+    scores = cosine_similarity(
+        query_embedding,
+        embeddings
+    )[0]
 
-    if not matches:
-
-        # fallback retrieval
-
-        for topic in TOPICS[:20]:
-
-            summary = topic.get(
-                "summary",
-                ""
-            )
-
-            if len(summary) > 20:
-
-                matches.append(
-                    summary
-                )
-
-        return {
-            "topics": matches[:5]
-        }
+    ranked = sorted(
+        zip(
+            documents,
+            scores
+        ),
+        key=lambda x: x[1],
+        reverse=True
+    )
 
     return {
-        "topics": matches[:5]
+        "topics": [
+            doc
+            for doc, _
+            in ranked[:top_k]
+        ]
     }
