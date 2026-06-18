@@ -8,7 +8,6 @@ class PersonaChatbot:
     def __init__(self):
 
         try:
-
             with open(
                 "outputs/persona.json",
                 "r",
@@ -17,7 +16,7 @@ class PersonaChatbot:
 
                 self.persona = json.load(f)
 
-            print(" Persona loaded successfully")
+            print("✅ Persona loaded successfully")
 
         except Exception as e:
 
@@ -47,64 +46,61 @@ Examples:
 
 • What are their habits?
 
-• How do they talk?
+• How do they communicate?
 
 • Tell me about music
 
-• Tell me about education
+• Tell me about fitness
 """
 
         query_lower = query.lower()
+
+        # Persona Questions
 
         if (
             "kind of person" in query_lower
             or "who is this user" in query_lower
             or "personality" in query_lower
         ):
-
             return self.describe_person()
 
         elif (
             "habit" in query_lower
             or "routine" in query_lower
         ):
-
             return self.describe_habits()
 
-       elif any(
-             phrase in query_lower
-              for phrase in [
+        elif any(
+            phrase in query_lower
+            for phrase in [
                 "talk",
                 "communication",
                 "communicate",
-             "speaking style",
-            "how do they talk",
-            "how do they communicate"
-        ]
-     ):
-
+                "speaking style",
+                "how do they talk",
+                "how do they communicate"
+            ]
+        ):
             return self.describe_style()
 
         elif (
             "personal fact" in query_lower
             or "background" in query_lower
         ):
-
             return self.describe_facts()
+
+        # Retrieval Questions
 
         try:
 
             results = retrieve(query)
 
-            topics = results.get(
-                "topics",
-                []
-            )
+            topics = results.get("topics", [])
 
             if not topics:
 
                 return """
-No Results Found
+ No Results Found
 
 No relevant information found for this query.
 """
@@ -125,13 +121,11 @@ No relevant information found for this query.
                     f"• {topic}"
                 )
 
-            return "\n".join(response)
+            return "\n\n".join(response)
 
         except Exception as e:
 
-            return (
-                f"Retrieval Error: {e}"
-            )
+            return f"Retrieval Error: {e}"
 
     def describe_person(self):
 
@@ -140,21 +134,21 @@ No relevant information found for this query.
 
 • Appears highly curious and frequently asks questions.
 
-• Strong interest in education, learning and career-related topics.
+• Strong interest in education, learning, and career-related topics.
 
 • Frequently discusses personal relationships and life experiences.
 
-• Shows recurring interest in fitness, music and self-improvement.
+• Shows recurring interest in fitness, music, and self-improvement.
 
 • Engages in conversations using an interactive and discussion-oriented style.
 
-• Generally demonstrates an exploratory and information-seeking mindset.
+• Demonstrates an exploratory and information-seeking mindset.
 """
 
     def describe_habits(self):
 
         return """
- Detected Habits
+Detected Habits
 
 • Study and education related discussions
 
@@ -185,7 +179,7 @@ No relevant information found for this query.
         )
 
         return f"""
- Communication Style Analysis
+Communication Style Analysis
 
 • Average message length: {avg_words} words
 
@@ -203,7 +197,7 @@ No relevant information found for this query.
     def describe_facts(self):
 
         return """
- Personal Facts
+Personal Facts
 
 • Educational background is frequently discussed.
 
